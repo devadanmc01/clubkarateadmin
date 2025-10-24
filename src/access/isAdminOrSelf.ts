@@ -1,8 +1,7 @@
 import type { User } from '../payload-types'
-import type { Access } from 'payload/config'
-import type { AccessArgs } from 'payload/config'
-type isAdmin = (args: AccessArgs<unknown, User>) => boolean | { clientId: { equals: string } }
-type isAdminOrSelfUser = (args: AccessArgs<unknown, User>) => boolean | { id: { equals: string } }
+import type { AccessArgs } from 'payload'
+type isAdmin = (args: AccessArgs<User>) => boolean | { clientId: { equals: string } }
+type isAdminOrSelfUser = (args: AccessArgs<User>) => boolean | { id: { equals: string } }
 
 export const isAdminOrSelf: isAdmin = ({ req: { user } }) => {
 //  console.log(user.email)
