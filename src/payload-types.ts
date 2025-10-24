@@ -68,7 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
-    media: Media;
+    alumnos: Alumno;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -76,7 +76,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
+    alumnos: AlumnosSelect<false> | AlumnosSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -119,6 +119,11 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  name?: string | null;
+  lastName?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  photo?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -139,22 +144,40 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "alumnos".
  */
-export interface Media {
+export interface Alumno {
   id: string;
-  alt: string;
+  name?: string | null;
+  lastName?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  address?: string | null;
+  photo?: string | null;
+  'assist record'?:
+    | {
+        date?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  'payments record'?:
+    | {
+        date?: string | null;
+        concept?: ('Visita' | 'Semana' | 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual') | null;
+        amount?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  record?:
+    | {
+        tournament?: string | null;
+        position?: string | null;
+        date?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -168,8 +191,8 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'media';
-        value: string | Media;
+        relationTo: 'alumnos';
+        value: string | Alumno;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -218,6 +241,11 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  lastName?: T;
+  phone?: T;
+  address?: T;
+  photo?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -237,21 +265,39 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
+ * via the `definition` "alumnos_select".
  */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
+export interface AlumnosSelect<T extends boolean = true> {
+  name?: T;
+  lastName?: T;
+  phone?: T;
+  email?: T;
+  address?: T;
+  photo?: T;
+  'assist record'?:
+    | T
+    | {
+        date?: T;
+        id?: T;
+      };
+  'payments record'?:
+    | T
+    | {
+        date?: T;
+        concept?: T;
+        amount?: T;
+        id?: T;
+      };
+  record?:
+    | T
+    | {
+        tournament?: T;
+        position?: T;
+        date?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
