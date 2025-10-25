@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { getPayload } from 'payload'
 import React from 'react'
 import { fileURLToPath } from 'url'
-import hero from '../../../media/hero.png'
+//import hero from '@/media/hero.png'
 import config from '@/payload.config'
 import './page.css'
 export default async function HomePage() {
@@ -37,7 +37,7 @@ export default async function HomePage() {
             <p className="small-text">Sin tarjetas de crédito. Cancelación en cualquier momento.</p>
         </div>
         <div className="hero-image">
-      <Image src={hero} alt='hero'/>
+    {  /*<Image src={hero} alt='hero'/>*/}
         </div>
     </section>
 
