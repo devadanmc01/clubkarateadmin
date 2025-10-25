@@ -124,7 +124,7 @@ export interface User {
   phone?: string | null;
   address?: string | null;
   photo?: string | null;
-  roles: ('admin' | 'client');
+  roles?: ('admin' | 'client') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
