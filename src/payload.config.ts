@@ -11,17 +11,37 @@ import Users from './collections/Users'
 import { Media } from './collections/Media'
 import { Payments } from './collections/Projects'
 import Students from './collections/Students'
-
+import StudentsStats from './components/views/StudentsStats'
+//import { StudentsStats } from './app/customComponents/StudentsStats'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
     user: Users.slug,
-    importMap: {
+
+    components:{
+      afterNavLinks:[
+        './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
+        './components/afterNavLink/LinkToPaymentsStatsView#LinkToPaymentsStatsView'
+
+      ],
+      views:{
+        EstadisticasdeAlumnos:{
+          Component:'./components/views/StudentsStats',
+          path:'/students-stats'
+        },
+        EstadisticasdePagos:{
+          Component:'./components/views/PaymentsStats',
+          path: '/payments-stats'
+        }
+      }
+    },
+        importMap: {
       baseDir: path.resolve(dirname),
     },
   },
+  
   collections: [Users,Students],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

@@ -1,0 +1,183 @@
+/* Variables CSS para consistencia de colores */
+:root {
+    --color-primary: #007bff; /* Azul */
+    --color-secondary: #6c757d; /* Gris */
+    --color-success: #28a745; /* Verde */
+    --color-light: #f8f9fa; /* Gris claro */
+    --color-dark: #343a40; /* Gris oscuro */
+    --color-white: #ffffff;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 1. Estilos Generales y del Contenedor */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+   
+    color: var(--color-dark);
+}
+
+.dashboard-container {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* 2. Cabecera */
+.dashboard-header {
+    
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: var(--card-shadow);
+}
+
+.dashboard-header h1 {
+    color: var(--color-primary);
+    margin: 0 0 5px 0;
+    font-size: 2em;
+}
+
+.dashboard-header p {
+    color: var(--color-secondary);
+    margin: 0;
+}
+
+/* 3. Tarjetas de Resumen (KPIs) - Uso de Grid */
+.kpi-cards {
+    display: grid;
+    /* Distribuye las tarjetas en 4 columnas en pantallas grandes */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    display: flex; /* Para alinear ícono y contenido */
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-icon {
+    font-size: 2.5em;
+    margin-right: 15px;
+    color: var(--color-primary);
+}
+
+.card-title {
+    margin: 0;
+    color: var(--color-secondary);
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.card-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--color-dark);
+    margin: 5px 0 0 0;
+}
+
+/* Colores específicos para algunas tarjetas (opcional) */
+.total-alumnos .card-icon { color: #ffc107; /* Amarillo */ }
+.promedio-general .card-icon { color: #17a2b8; /* Cyan */ }
+.alumnos-aprobados .card-icon { color: var(--color-success); }
+.mejor-curso .card-icon { color: var(--color-primary); }
+
+
+/* 4. Área Principal (Gráficos y Tablas) - Uso de Grid */
+.dashboard-main {
+    display: grid;
+    /* Distribuye el área principal en 3 columnas */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.chart-panel, .table-panel {
+    
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    grid-column: span 1; /* Por defecto ocupan 1 columna */
+}
+
+/* Hacer que el primer gráfico ocupe 2 columnas en pantallas grandes */
+.dashboard-main section:first-child {
+    grid-column: span 2;
+}
+
+.chart-panel h2, .table-panel h2 {
+    margin-top: 0;
+    border-bottom: 2px solid var(--color-light);
+    padding-bottom: 10px;
+    color: var(--color-dark);
+    font-size: 1.5em;
+}
+
+.chart-placeholder {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: var(--color-secondary);
+    border-radius: 4px;
+    border: 1px dashed var(--color-secondary);
+}
+
+/* Estilos para la Tabla de Datos */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead tr {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* 5. Media Queries para Responsividad */
+@media (max-width: 1200px) {
+    /* En pantallas medianas, el primer gráfico solo ocupa 1 columna */
+    .dashboard-main section:first-child {
+        grid-column: span 1;
+    }
+    /* El main se convierte a 1 columna para que todo esté apilado */
+    .dashboard-main {
+        grid-template-columns: 1fr;
+    }
+    .chart-panel, .table-panel {
+        grid-column: span 1 !important; /* Asegura que todos ocupen el ancho completo */
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 10px;
+    }
+    .kpi-cards {
+        /* En móviles, las tarjetas pueden apilarse o tener 2 columnas */
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+}

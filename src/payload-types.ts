@@ -124,7 +124,7 @@ export interface User {
   phone?: string | null;
   address?: string | null;
   photo?: string | null;
-  roles: string; 
+  roles?: ('admin' | 'client') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -247,6 +247,7 @@ export interface UsersSelect<T extends boolean = true> {
   phone?: T;
   address?: T;
   photo?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

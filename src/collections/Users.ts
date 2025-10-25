@@ -6,11 +6,11 @@ const Users: CollectionConfig = {
   auth: true,
   access: {
     // Only admins can create convertions
-    create: () => true,
-    // Admins can read all, but any other logged in user can only read themselves
+    create: isAdmin,
+    // AdminsisAdminOrSelfUser can read all, but any other logged in user can only read themselves
     read: isAdminOrSelfUser,
     // Admins can update all, but any other logged in user can only update themselves
-    update: isAdmin,
+    update: isAdminOrSelfUser,
     // Admins can update all, but any other logged in user can only update themselves
     delete: isAdmin,
   },
@@ -39,6 +39,11 @@ const Users: CollectionConfig = {
       name: 'photo',
       type: 'text',
     },
+    {
+      name:'roles',
+      type:'select',
+      options:['admin', 'client']
+    }
 
   ],
 }

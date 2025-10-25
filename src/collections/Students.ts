@@ -85,7 +85,7 @@ const Students: CollectionConfig = {
       ]
     },
     {
-        label: 'Redord Competitivo',
+        label: 'Record Competitivo',
         name:"record",
         type: 'array',
         fields:[
