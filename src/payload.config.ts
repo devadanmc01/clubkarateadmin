@@ -9,7 +9,7 @@ import sharp from 'sharp'
 
 import Users from './collections/Users'
 import { Media } from './collections/Media'
-import { Payments } from './collections/Projects'
+import { Payments } from './collections/Payments'
 import Students from './collections/Students'
 import StudentsStats from './components/views/StudentsStats'
 //import { StudentsStats } from './app/customComponents/StudentsStats'
@@ -20,29 +20,29 @@ export default buildConfig({
   admin: {
     user: Users.slug,
 
-    components:{
-      afterNavLinks:[
+    components: {
+      afterNavLinks: [
         './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
         './components/afterNavLink/LinkToPaymentsStatsView#LinkToPaymentsStatsView'
 
       ],
-      views:{
-        EstadisticasdeAlumnos:{
-          Component:'./components/views/StudentsStats',
-          path:'/students-stats'
+      views: {
+        EstadisticasdeAlumnos: {
+          Component: './components/views/StudentsStats',
+          path: '/students-stats'
         },
-        EstadisticasdePagos:{
-          Component:'./components/views/PaymentsStats',
+        EstadisticasdePagos: {
+          Component: './components/views/PaymentsStats',
           path: '/payments-stats'
         }
       }
     },
-        importMap: {
+    importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  
-  collections: [Users,Students],
+
+  collections: [Users, Students],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
