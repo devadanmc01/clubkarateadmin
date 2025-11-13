@@ -5,8 +5,8 @@ import { isAdmin } from '../access/isAdmin'
 export const Payments: CollectionConfig = {
   slug: 'payments',
   labels: {
-    plural: 'Pagos',
-    singular: 'Pago'
+    plural: { en: 'Payments', es: 'Pagos' },
+    singular: { en: 'Payment', es: 'Pago' },
   },
   admin: {
     group: adminGroups.app,

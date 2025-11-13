@@ -7,8 +7,8 @@ import { isAdmin } from '../access/isAdmin'
 const Attendances: CollectionConfig = {
   slug: 'attendances',
   labels: {
-    plural: 'Asistencias',
-    singular: 'Asistencia'
+    plural: { en: 'Attendances', es: 'Asistencias' },
+    singular: { en: 'Attendance', es: 'Asistencia' },
   },
   admin: {
     group: adminGroups.app,
@@ -32,7 +32,7 @@ const Attendances: CollectionConfig = {
       required: true,
     },
     {
-      label: 'Fecha',
+      label: { en: 'Date', es: 'Fecha' },
       name: 'date',
       type: 'date',
       admin: {
@@ -44,7 +44,7 @@ const Attendances: CollectionConfig = {
       defaultValue: () => new Date().toISOString(),
     },
     {
-      label: 'Hora de registro',
+      label: { en: 'Check-in time', es: 'Hora de registro' },
       name: 'checkInTime',
       type: 'date',
       admin: {

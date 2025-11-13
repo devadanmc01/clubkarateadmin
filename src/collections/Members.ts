@@ -9,14 +9,14 @@ const populateFullName: FieldHook = async ({ data }) =>
 
 const Members: CollectionConfig = {
   slug: 'members',
+  labels: {
+    plural: { en: 'Members', es: 'Miembros' },
+    singular: { en: 'Member', es: 'Miembro' },
+  },
   admin: {
     group: adminGroups.app,
     useAsTitle: 'fullName',
     listSearchableFields: ['firstName', 'paternalSurname', 'maternalSurname', 'email'],
-  },
-  labels: {
-    plural: 'Miembros',
-    singular: 'Miembro',
   },
   access: {
     // Only admins can create members
@@ -33,25 +33,26 @@ const Members: CollectionConfig = {
       type: 'row',
       fields: [
         {
-          label: 'Nombre',
+          label: { en: 'First name', es: 'Nombre' },
           name: 'firstName',
           type: 'text',
           required: true,
         },
         {
-          label: 'Apellido Paterno',
+          label: { en: 'Paternal surname', es: 'Apellido paterno' },
           name: 'paternalSurname',
           type: 'text',
           required: true,
         },
         {
-          label: 'Apellido Materno',
+          label: { en: 'Maternal surname', es: 'Apellido materno' },
           name: 'maternalSurname',
           type: 'text',
         },
       ],
     },
     {
+      label: { en: 'Full name', es: 'Nombre completo' },
       name: 'fullName',
       type: 'text',
       access: {
@@ -78,24 +79,24 @@ const Members: CollectionConfig = {
       required: true,
     },
     {
-      label: 'Teléfono',
+      label: { en: 'Phone', es: 'Teléfono' },
       name: 'phone',
       type: 'text',
     },
     {
-      label: 'Fecha de afiliación',
+      label: { en: 'Join date', es: 'Fecha de afiliación' },
       name: 'joinDate',
       type: 'date',
       defaultValue: () => new Date().toISOString().split('T')[0],
     },
     {
-      label: 'Estatus',
+      label: { en: 'Status', es: 'Estatus' },
       name: 'status',
       type: 'select',
       options: [
-        { label: 'Activo', value: 'active' },
-        { label: 'Inactivo', value: 'inactive' },
-        { label: 'Pendiente', value: 'pending' },
+        { value: 'active', label: { en: 'Active', es: 'Activo' } },
+        { value: 'inactive', label: { en: 'Inactive', es: 'Inactivo' } },
+        { value: 'pending', label: { en: 'Pending', es: 'Pendiente' } },
       ],
       defaultValue: 'active',
       required: true,

@@ -2,9 +2,11 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
 import { buildConfig } from 'payload'
+import { en } from '@payloadcms/translations/languages/en'
+import { es } from '@payloadcms/translations/languages/es'
 import { fileURLToPath } from 'url'
+import path from 'path'
 import sharp from 'sharp'
 
 // import { Media } from './collections/Media'
@@ -53,6 +55,16 @@ export default buildConfig({
   },
   collections: [Members, Attendances, Payments, Users],
   editor: lexicalEditor(),
+  i18n: {
+    supportedLanguages: { en, es },
+  },
+  localization: {
+    locales: [
+      { code: 'en', label: 'English' },
+      { code: 'es', label: 'Español' },
+    ],
+    defaultLocale: 'en',
+  },
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

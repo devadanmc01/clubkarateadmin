@@ -9,6 +9,10 @@ const Users: CollectionConfig = {
   admin: {
     group: adminGroups.system,
   },
+  labels: {
+    plural: { en: 'Users', es: 'Usuarios' },
+    singular: { en: 'User', es: 'Usuario' },
+  },
   access: {
     // Only admins can create convertions
     create: isAdmin,
@@ -21,10 +25,12 @@ const Users: CollectionConfig = {
   },
   fields: [
     {
+      label: { en: 'Name', es: 'Nombre' },
       name: 'name',
       type: 'text',
     },
     {
+      label: { en: 'Last name', es: 'Apellido' },
       name: 'lastName',
       type: 'text',
     },
@@ -33,6 +39,7 @@ const Users: CollectionConfig = {
       type: 'email',
     },
     {
+      label: { en: 'Role', es: 'Rol' },
       name: 'roles',
       type: 'select',
       options: ['admin', 'client'],
