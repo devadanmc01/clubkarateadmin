@@ -1,11 +1,13 @@
 import type { CollectionConfig } from 'payload'
 import { isAdmin } from '../access/isAdmin'
+// import { isAdminOrSelfUser } from '../access/isAdminOrSelf'
+// import { date } from 'payload/shared'
 
-export const Payments: CollectionConfig = {
-  slug: 'payments',
+const Attendances: CollectionConfig = {
+  slug: 'attendances',
   labels: {
-    plural: 'Pagos',
-    singular: 'Pago'
+    plural: 'Asistencias',
+    singular: 'Asistencia'
   },
   access: {
     // Only admins can create members
@@ -22,33 +24,20 @@ export const Payments: CollectionConfig = {
       name: 'member',
       type: 'relationship',
       relationTo: 'members',
-      required: true,
+      required: true
     },
     {
-      name: 'amount',
-      type: 'number',
-      required: true,
-      min: 0,
-    },
-    {
+      label: 'Fecha',
       name: 'date',
       type: 'date',
       defaultValue: () => new Date().toISOString().split('T')[0],
     },
     {
-      name: 'status',
-      type: 'select',
-      options: [
-        { label: 'Paid', value: 'paid' },
-        { label: 'Pending', value: 'pending' },
-        { label: 'Failed', value: 'failed' },
-        { label: 'Refunded', value: 'refunded' },
-      ]
-    },
-    {
-      name: 'notes',
-      type: 'textarea',
+      label: 'Hora de registro',
+      name: 'checkInTime',
+      type: 'time',
+      defaultValue: () => new Date().toTimeString().slice(0, 5),
     },
   ],
 }
-export default Payments
+export default Attendances

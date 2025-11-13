@@ -24,25 +24,13 @@ const Users: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'phone',
-      type: 'text',
-    },
-        {
       name: 'email',
       type: 'email',
     },
     {
-      name: 'address',
-      type: 'text',
-    },
-    {
-      name: 'photo',
-      type: 'text',
-    },
-    {
-      name:'roles',
-      type:'select',
-      options:['admin', 'client']
+      name: 'roles',
+      type: 'select',
+      options: ['admin', 'client']
     }
 
   ],

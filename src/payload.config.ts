@@ -7,42 +7,42 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+// import { Media } from './collections/Media'
+import Members from './collections/Members'
+import Attendances from './collections/Attendances'
+import Payments from './collections/Payments'
 import Users from './collections/Users'
-import { Media } from './collections/Media'
-import { Payments } from './collections/Payments'
-import Students from './collections/Students'
-import StudentsStats from './components/views/StudentsStats'
-//import { StudentsStats } from './app/customComponents/StudentsStats'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
     user: Users.slug,
-
-    components: {
-      afterNavLinks: [
-        './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
-        './components/afterNavLink/LinkToPaymentsStatsView#LinkToPaymentsStatsView'
-
-      ],
-      views: {
-        EstadisticasdeAlumnos: {
-          Component: './components/views/StudentsStats',
-          path: '/students-stats'
-        },
-        EstadisticasdePagos: {
-          Component: './components/views/PaymentsStats',
-          path: '/payments-stats'
-        }
-      }
-    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      // afterNavLinks: [
+      //   './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
+      //   './components/afterNavLink/LinkToPaymentsStatsView#LinkToPaymentsStatsView'
+      //
+      // ],
+      // views: {
+      //   // EstadisticasdeAlumnos: {
+      //   //   Component: './components/views/StudentsStats',
+      //   //   path: '/students-stats'
+      //   // },
+      //   // EstadisticasdePagos: {
+      //   //   Component: './components/views/PaymentsStats',
+      //   //   path: '/payments-stats'
+      //   // },
+      // },
+    },
+    theme: 'dark',
   },
 
-  collections: [Users, Students],
+  collections: [Members, Attendances, Payments, Users],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
