@@ -1,21 +1,22 @@
 import type { CollectionConfig, FieldHook } from 'payload'
+import { adminGroups } from '@/utilities/adminGroups'
 import { isAdmin } from '../access/isAdmin'
 // import { isAdminOrSelfUser } from '../access/isAdminOrSelf'
 // import { date } from 'payload/shared'
 
-const populateFullName: FieldHook = async ({ data }) => (
+const populateFullName: FieldHook = async ({ data }) =>
   `${data.firstName} ${data.paternalSurname} ${data.maternalSurname}`
-);
 
 const Members: CollectionConfig = {
   slug: 'members',
   admin: {
+    group: adminGroups.app,
     useAsTitle: 'fullName',
     listSearchableFields: ['firstName', 'paternalSurname', 'maternalSurname', 'email'],
   },
   labels: {
     plural: 'Miembros',
-    singular: 'Miembro'
+    singular: 'Miembro',
   },
   access: {
     // Only admins can create members
@@ -48,7 +49,7 @@ const Members: CollectionConfig = {
           name: 'maternalSurname',
           type: 'text',
         },
-      ]
+      ],
     },
     {
       name: 'fullName',
@@ -58,13 +59,13 @@ const Members: CollectionConfig = {
         update: () => false,
       },
       hooks: {
-        beforeChange: [({ siblingData }) => {
-          // ensures data is not stored in DB
-          delete siblingData['fullName'];
-        }],
-        afterRead: [
-          populateFullName,
+        beforeChange: [
+          ({ siblingData }) => {
+            // ensures data is not stored in DB
+            delete siblingData['fullName']
+          },
         ],
+        afterRead: [populateFullName],
       },
       admin: {
         hidden: true,
@@ -85,7 +86,7 @@ const Members: CollectionConfig = {
       label: 'Fecha de afiliación',
       name: 'joinDate',
       type: 'date',
-      defaultValue: () => new Date().toISOString().split('T')[0]
+      defaultValue: () => new Date().toISOString().split('T')[0],
     },
     {
       label: 'Estatus',
@@ -97,7 +98,7 @@ const Members: CollectionConfig = {
         { label: 'Pendiente', value: 'pending' },
       ],
       defaultValue: 'active',
-      required: true
+      required: true,
     },
   ],
 }

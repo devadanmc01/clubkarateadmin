@@ -38,6 +38,7 @@ export default buildConfig({
       //   //   path: '/payments-stats'
       //   // },
       // },
+      Nav: '/components/Nav#Nav',
     },
     theme: 'dark',
   },

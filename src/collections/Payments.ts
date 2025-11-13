@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { adminGroups } from '@/utilities/adminGroups'
 import { isAdmin } from '../access/isAdmin'
 
 export const Payments: CollectionConfig = {
@@ -6,6 +7,9 @@ export const Payments: CollectionConfig = {
   labels: {
     plural: 'Pagos',
     singular: 'Pago'
+  },
+  admin: {
+    group: adminGroups.app,
   },
   access: {
     // Only admins can create members

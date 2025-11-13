@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { adminGroups } from '@/utilities/adminGroups'
 import { isAdmin } from '../access/isAdmin'
 // import { isAdminOrSelfUser } from '../access/isAdminOrSelf'
 // import { date } from 'payload/shared'
@@ -8,6 +9,9 @@ const Attendances: CollectionConfig = {
   labels: {
     plural: 'Asistencias',
     singular: 'Asistencia'
+  },
+  admin: {
+    group: adminGroups.app,
   },
   access: {
     // Only admins can create members

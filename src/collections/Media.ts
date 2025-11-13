@@ -1,7 +1,11 @@
 import type { CollectionConfig } from 'payload'
+import { adminGroups } from '@/utilities/adminGroups'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  admin: {
+    group: adminGroups.system,
+  },
   access: {
     read: () => true,
   },

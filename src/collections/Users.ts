@@ -1,9 +1,14 @@
 import type { CollectionConfig } from 'payload'
+import { adminGroups } from '@/utilities/adminGroups'
 import { isAdmin } from '../access/isAdmin'
 import { isAdminOrSelfUser } from '../access/isAdminOrSelf'
+
 const Users: CollectionConfig = {
   slug: 'users',
   auth: true,
+  admin: {
+    group: adminGroups.system,
+  },
   access: {
     // Only admins can create convertions
     create: isAdmin,
@@ -30,9 +35,8 @@ const Users: CollectionConfig = {
     {
       name: 'roles',
       type: 'select',
-      options: ['admin', 'client']
-    }
-
+      options: ['admin', 'client'],
+    },
   ],
 }
 export default Users
