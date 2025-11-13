@@ -16,10 +16,10 @@ const Attendances: CollectionConfig = {
   access: {
     // Only admins can create members
     create: isAdmin,
-    // Admins can read all, but any other logged in user can only read themselves
+    // Only admins can read all members
     read: isAdmin,
-    // Admins can update all, but any other logged in user can only update themselves
-    update: isAdmin,
+    // Attendances cannot be modified to avoid cheating
+    update: () => false,
     // Only admins can delete
     delete: isAdmin,
   },
@@ -28,19 +28,32 @@ const Attendances: CollectionConfig = {
       name: 'member',
       type: 'relationship',
       relationTo: 'members',
-      required: true
+      hasMany: true,
+      required: true,
     },
     {
       label: 'Fecha',
       name: 'date',
       type: 'date',
-      defaultValue: () => new Date().toISOString().split('T')[0],
+      admin: {
+        date: {
+          pickerAppearance: 'dayOnly',
+          displayFormat: 'd MMM yyy',
+        },
+      },
+      defaultValue: () => new Date().toISOString(),
     },
     {
       label: 'Hora de registro',
       name: 'checkInTime',
-      type: 'time',
-      defaultValue: () => new Date().toTimeString().slice(0, 5),
+      type: 'date',
+      admin: {
+        date: {
+          pickerAppearance: 'timeOnly',
+          displayFormat: 'h:mm:ss a',
+        },
+      },
+      defaultValue: () => new Date().toISOString(),
     },
   ],
 }

@@ -164,4 +164,12 @@
   //     height: auto;
   //   }
   // }
+
+  .collection-list {
+    @media (max-width: 1024px) {
+      .table {
+        padding-right: var(--gutter-h);
+      }
+    }
+  }
 }

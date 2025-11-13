@@ -40,9 +40,17 @@ export default buildConfig({
       // },
       Nav: '/components/Nav#Nav',
     },
+    timezones: {
+      supportedTimezones: [
+        {
+          label: 'America/Mexico_City',
+          value: 'America/Mexico_City',
+        },
+      ],
+      defaultTimezone: 'America/Mexico_City',
+    },
     theme: 'dark',
   },
-
   collections: [Members, Attendances, Payments, Users],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
