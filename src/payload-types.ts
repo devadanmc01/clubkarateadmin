@@ -12,54 +12,7 @@
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "supportedTimezones".
  */
-export type SupportedTimezones =
-  | 'Pacific/Midway'
-  | 'Pacific/Niue'
-  | 'Pacific/Honolulu'
-  | 'Pacific/Rarotonga'
-  | 'America/Anchorage'
-  | 'Pacific/Gambier'
-  | 'America/Los_Angeles'
-  | 'America/Tijuana'
-  | 'America/Denver'
-  | 'America/Phoenix'
-  | 'America/Chicago'
-  | 'America/Guatemala'
-  | 'America/New_York'
-  | 'America/Bogota'
-  | 'America/Caracas'
-  | 'America/Santiago'
-  | 'America/Buenos_Aires'
-  | 'America/Sao_Paulo'
-  | 'Atlantic/South_Georgia'
-  | 'Atlantic/Azores'
-  | 'Atlantic/Cape_Verde'
-  | 'Europe/London'
-  | 'Europe/Berlin'
-  | 'Africa/Lagos'
-  | 'Europe/Athens'
-  | 'Africa/Cairo'
-  | 'Europe/Moscow'
-  | 'Asia/Riyadh'
-  | 'Asia/Dubai'
-  | 'Asia/Baku'
-  | 'Asia/Karachi'
-  | 'Asia/Tashkent'
-  | 'Asia/Calcutta'
-  | 'Asia/Dhaka'
-  | 'Asia/Almaty'
-  | 'Asia/Jakarta'
-  | 'Asia/Bangkok'
-  | 'Asia/Shanghai'
-  | 'Asia/Singapore'
-  | 'Asia/Tokyo'
-  | 'Asia/Seoul'
-  | 'Australia/Brisbane'
-  | 'Australia/Sydney'
-  | 'Pacific/Guam'
-  | 'Pacific/Noumea'
-  | 'Pacific/Auckland'
-  | 'Pacific/Fiji';
+export type SupportedTimezones = 'America/Mexico_City';
 
 export interface Config {
   auth: {
@@ -67,16 +20,20 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    members: Member;
+    attendances: Attendance;
+    payments: Payment;
     users: User;
-    alumnos: Alumno;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
+    members: MembersSelect<false> | MembersSelect<true>;
+    attendances: AttendancesSelect<false> | AttendancesSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    alumnos: AlumnosSelect<false> | AlumnosSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -115,16 +72,53 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members".
+ */
+export interface Member {
+  id: string;
+  fullName?: string | null;
+  email: string;
+  phone?: string | null;
+  joinDate?: string | null;
+  status: 'active' | 'inactive' | 'pending';
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendances".
+ */
+export interface Attendance {
+  id: string;
+  member: (string | Member)[];
+  checkInTime?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: string;
+  member: (string | Member)[];
+  amount: number;
+  date?: string | null;
+  status?: ('paid' | 'pending' | 'refunded') | null;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: string;
   name?: string | null;
   lastName?: string | null;
-  phone?: string | null;
-  address?: string | null;
-  photo?: string | null;
-  roles: ('admin' | 'client');
+  roles?: ('admin' | 'client') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -145,55 +139,26 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "alumnos".
- */
-export interface Alumno {
-  id: string;
-  name?: string | null;
-  lastName?: string | null;
-  phone?: string | null;
-  email?: string | null;
-  address?: string | null;
-  photo?: string | null;
-  'assist record'?:
-    | {
-        date?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  'payments record'?:
-    | {
-        date?: string | null;
-        concept?: ('Visita' | 'Semana' | 'Mensual' | 'Trimestral' | 'Semestral' | 'Anual') | null;
-        amount?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  record?:
-    | {
-        tournament?: string | null;
-        position?: string | null;
-        date?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'users';
-        value: string | User;
+        relationTo: 'members';
+        value: string | Member;
       } | null)
     | ({
-        relationTo: 'alumnos';
-        value: string | Alumno;
+        relationTo: 'attendances';
+        value: string | Attendance;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: string | Payment;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: string | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -239,14 +204,48 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members_select".
+ */
+export interface MembersSelect<T extends boolean = true> {
+  fullName?: T;
+  email?: T;
+  phone?: T;
+  joinDate?: T;
+  status?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendances_select".
+ */
+export interface AttendancesSelect<T extends boolean = true> {
+  member?: T;
+  checkInTime?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments_select".
+ */
+export interface PaymentsSelect<T extends boolean = true> {
+  member?: T;
+  amount?: T;
+  date?: T;
+  status?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
   lastName?: T;
-  phone?: T;
-  address?: T;
-  photo?: T;
   roles?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -264,42 +263,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "alumnos_select".
- */
-export interface AlumnosSelect<T extends boolean = true> {
-  name?: T;
-  lastName?: T;
-  phone?: T;
-  email?: T;
-  address?: T;
-  photo?: T;
-  'assist record'?:
-    | T
-    | {
-        date?: T;
-        id?: T;
-      };
-  'payments record'?:
-    | T
-    | {
-        date?: T;
-        concept?: T;
-        amount?: T;
-        id?: T;
-      };
-  record?:
-    | T
-    | {
-        tournament?: T;
-        position?: T;
-        date?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

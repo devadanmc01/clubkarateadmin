@@ -1,9 +1,18 @@
 import type { CollectionConfig } from 'payload'
+import { adminGroups } from '@/utilities/adminGroups'
 import { isAdmin } from '../access/isAdmin'
 import { isAdminOrSelfUser } from '../access/isAdminOrSelf'
+
 const Users: CollectionConfig = {
   slug: 'users',
   auth: true,
+  admin: {
+    group: adminGroups.system,
+  },
+  labels: {
+    plural: { en: 'Users', es: 'Usuarios' },
+    singular: { en: 'User', es: 'Usuario' },
+  },
   access: {
     // Only admins can create convertions
     create: isAdmin,
@@ -16,35 +25,25 @@ const Users: CollectionConfig = {
   },
   fields: [
     {
+      label: { en: 'Name', es: 'Nombre' },
       name: 'name',
       type: 'text',
     },
     {
+      label: { en: 'Last name', es: 'Apellido' },
       name: 'lastName',
       type: 'text',
     },
     {
-      name: 'phone',
-      type: 'text',
-    },
-        {
       name: 'email',
       type: 'email',
     },
     {
-      name: 'address',
-      type: 'text',
+      label: { en: 'Role', es: 'Rol' },
+      name: 'roles',
+      type: 'select',
+      options: ['admin', 'client'],
     },
-    {
-      name: 'photo',
-      type: 'text',
-    },
-    {
-      name:'roles',
-      type:'select',
-      options:['admin', 'client']
-    }
-
   ],
 }
 export default Users
