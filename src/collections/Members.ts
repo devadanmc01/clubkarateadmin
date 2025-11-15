@@ -1,11 +1,8 @@
-import type { CollectionConfig, FieldHook } from 'payload'
+import type { CollectionConfig } from 'payload'
 import { adminGroups } from '@/utilities/adminGroups'
 import { isAdmin } from '../access/isAdmin'
 // import { isAdminOrSelfUser } from '../access/isAdminOrSelf'
 // import { date } from 'payload/shared'
-
-const populateFullName: FieldHook = async ({ data }) =>
-  `${data.firstName} ${data.paternalSurname} ${data.maternalSurname}`
 
 const Members: CollectionConfig = {
   slug: 'members',
@@ -16,7 +13,7 @@ const Members: CollectionConfig = {
   admin: {
     group: adminGroups.app,
     useAsTitle: 'fullName',
-    listSearchableFields: ['firstName', 'paternalSurname', 'maternalSurname', 'email'],
+    listSearchableFields: ['fullName', 'email'],
   },
   access: {
     // Only admins can create members
@@ -30,47 +27,9 @@ const Members: CollectionConfig = {
   },
   fields: [
     {
-      type: 'row',
-      fields: [
-        {
-          label: { en: 'First name', es: 'Nombre' },
-          name: 'firstName',
-          type: 'text',
-          required: true,
-        },
-        {
-          label: { en: 'Paternal surname', es: 'Apellido paterno' },
-          name: 'paternalSurname',
-          type: 'text',
-          required: true,
-        },
-        {
-          label: { en: 'Maternal surname', es: 'Apellido materno' },
-          name: 'maternalSurname',
-          type: 'text',
-        },
-      ],
-    },
-    {
       label: { en: 'Full name', es: 'Nombre completo' },
       name: 'fullName',
       type: 'text',
-      access: {
-        create: () => false,
-        update: () => false,
-      },
-      hooks: {
-        beforeChange: [
-          ({ siblingData }) => {
-            // ensures data is not stored in DB
-            delete siblingData['fullName']
-          },
-        ],
-        afterRead: [populateFullName],
-      },
-      admin: {
-        hidden: true,
-      },
     },
     {
       label: 'Email',
@@ -87,7 +46,20 @@ const Members: CollectionConfig = {
       label: { en: 'Join date', es: 'Fecha de afiliación' },
       name: 'joinDate',
       type: 'date',
-      defaultValue: () => new Date().toISOString().split('T')[0],
+      virtual: true,
+      admin: {
+        readOnly: true,
+        date: {
+          displayFormat: 'd MMM yyy h:mm:ss a',
+        },
+      },
+      hooks: {
+        afterRead: [
+          ({ originalDoc }) => {
+            return new Date(originalDoc.createdAt)
+          },
+        ],
+      },
     },
     {
       label: { en: 'Status', es: 'Estatus' },
@@ -100,6 +72,11 @@ const Members: CollectionConfig = {
       ],
       defaultValue: 'active',
       required: true,
+    },
+    {
+      label: { en: 'Notes', es: 'Notas' },
+      name: 'notes',
+      type: 'textarea',
     },
   ],
 }

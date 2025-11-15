@@ -43,7 +43,7 @@ export interface Config {
   };
   globals: {};
   globalsSelect: {};
-  locale: 'en' | 'es';
+  locale: null;
   user: User & {
     collection: 'users';
   };
@@ -76,14 +76,12 @@ export interface UserAuthOperations {
  */
 export interface Member {
   id: string;
-  firstName: string;
-  paternalSurname: string;
-  maternalSurname?: string | null;
   fullName?: string | null;
   email: string;
   phone?: string | null;
   joinDate?: string | null;
   status: 'active' | 'inactive' | 'pending';
+  notes?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -94,7 +92,6 @@ export interface Member {
 export interface Attendance {
   id: string;
   member: (string | Member)[];
-  date?: string | null;
   checkInTime?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -105,10 +102,10 @@ export interface Attendance {
  */
 export interface Payment {
   id: string;
-  member: string | Member;
+  member: (string | Member)[];
   amount: number;
   date?: string | null;
-  status?: ('paid' | 'pending' | 'failed' | 'refunded') | null;
+  status?: ('paid' | 'pending' | 'refunded') | null;
   notes?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -210,14 +207,12 @@ export interface PayloadMigration {
  * via the `definition` "members_select".
  */
 export interface MembersSelect<T extends boolean = true> {
-  firstName?: T;
-  paternalSurname?: T;
-  maternalSurname?: T;
   fullName?: T;
   email?: T;
   phone?: T;
   joinDate?: T;
   status?: T;
+  notes?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -227,7 +222,6 @@ export interface MembersSelect<T extends boolean = true> {
  */
 export interface AttendancesSelect<T extends boolean = true> {
   member?: T;
-  date?: T;
   checkInTime?: T;
   updatedAt?: T;
   createdAt?: T;

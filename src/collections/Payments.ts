@@ -23,33 +23,51 @@ export const Payments: CollectionConfig = {
   },
   fields: [
     {
+      label: { en: 'Member', es: 'Miembro' },
       name: 'member',
       type: 'relationship',
       relationTo: 'members',
+      hasMany: true,
       required: true,
     },
     {
+      label: { en: 'Amount', es: 'Monto' },
       name: 'amount',
       type: 'number',
       required: true,
       min: 0,
     },
     {
+      label: { en: 'Payment date', es: 'Fecha de pago' },
       name: 'date',
       type: 'date',
-      defaultValue: () => new Date().toISOString().split('T')[0],
+      virtual: true,
+      admin: {
+        readOnly: true,
+        date: {
+          displayFormat: 'd MMM yyy h:mm:ss a',
+        },
+      },
+      hooks: {
+        afterRead: [
+          ({ originalDoc }) => {
+            return new Date(originalDoc.createdAt)
+          },
+        ],
+      },
     },
     {
+      label: { en: 'Status', es: 'Estatus' },
       name: 'status',
       type: 'select',
       options: [
-        { label: 'Paid', value: 'paid' },
-        { label: 'Pending', value: 'pending' },
-        { label: 'Failed', value: 'failed' },
-        { label: 'Refunded', value: 'refunded' },
-      ]
+        { value: 'paid', label: { en: 'Paid', es: 'Pagado' } },
+        { value: 'pending', label: { en: 'Pending', es: 'Pendiente' } },
+        { value: 'refunded', label: { en: 'Refunded', es: 'Reembolsado' } },
+      ],
     },
     {
+      label: { en: 'Notes', es: 'Notas' },
       name: 'notes',
       type: 'textarea',
     },

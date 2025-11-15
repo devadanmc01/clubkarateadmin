@@ -25,6 +25,7 @@ const Attendances: CollectionConfig = {
   },
   fields: [
     {
+      label: { en: 'Member', es: 'Miembro' },
       name: 'member',
       type: 'relationship',
       relationTo: 'members',
@@ -32,28 +33,23 @@ const Attendances: CollectionConfig = {
       required: true,
     },
     {
-      label: { en: 'Date', es: 'Fecha' },
-      name: 'date',
-      type: 'date',
-      admin: {
-        date: {
-          pickerAppearance: 'dayOnly',
-          displayFormat: 'd MMM yyy',
-        },
-      },
-      defaultValue: () => new Date().toISOString(),
-    },
-    {
-      label: { en: 'Check-in time', es: 'Hora de registro' },
+      label: { en: 'Checked-in at', es: 'Hora de registro' },
       name: 'checkInTime',
       type: 'date',
+      virtual: true,
       admin: {
+        readOnly: true,
         date: {
-          pickerAppearance: 'timeOnly',
-          displayFormat: 'h:mm:ss a',
+          displayFormat: 'd MMM yyy h:mm:ss a',
         },
       },
-      defaultValue: () => new Date().toISOString(),
+      hooks: {
+        afterRead: [
+          ({ originalDoc }) => {
+            return new Date(originalDoc.createdAt)
+          },
+        ],
+      },
     },
   ],
 }

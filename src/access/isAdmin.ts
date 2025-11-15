@@ -4,7 +4,8 @@ type isAdmin = (args: AccessArgs<User>) => boolean
 
 export const isAdmin: isAdmin = ({ req: { user } }) => {
   let role: string = ''
-  if (user !== null) {
+
+  if (user !== null && user.roles) {
     role = user.roles
   }
 
@@ -13,7 +14,7 @@ export const isAdmin: isAdmin = ({ req: { user } }) => {
 }
 export const isAdminFieldLevel: isAdmin = ({ req: { user } }) => {
   let role: string = ''
-  if (user !== null) {
+  if (user !== null && user.roles) {
     role = user.roles
   }
   // Return true or false based on if the user has an admin role

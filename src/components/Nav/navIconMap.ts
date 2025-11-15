@@ -1,5 +1,5 @@
 import { CollectionSlug, GlobalSlug } from 'payload'
-import { CreditCard, SquareCheckBig, User, Users } from 'lucide-react'
+import { CreditCard, SquareCheckBig, User, Users, LucideProps } from 'lucide-react'
 import { ExoticComponent } from 'react'
 
 export const navIconMap: Partial<
