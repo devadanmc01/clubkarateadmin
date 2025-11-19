@@ -55,16 +55,18 @@ export default buildConfig({
   },
   collections: [Members, Attendances, Payments, Users],
   editor: lexicalEditor(),
-  // i18n: {
-  //   supportedLanguages: { en, es },
-  // },
-  // localization: {
-  //   locales: [
-  //     { code: 'en', label: 'English' },
-  //     { code: 'es', label: 'Español' },
-  //   ],
-  //   defaultLocale: 'en',
-  // },
+  i18n: {
+    supportedLanguages: {
+      en: {
+        ...en,
+        dateFNSKey: 'en-US',
+      },
+      es: {
+        ...es,
+        dateFNSKey: 'es',
+      },
+    },
+  },
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
