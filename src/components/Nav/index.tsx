@@ -120,7 +120,7 @@ export const Nav: FC<ServerProps> = async (props) => {
             user,
           },
         })}
-        <div className={`${baseClass}__controls`}>{LogoutComponent} Logout</div>
+        <div className={`${baseClass}__controls`}>{LogoutComponent}</div>
       </nav>
       <div className={`${baseClass}__header`}>
         <div className={`${baseClass}__header-content`}>

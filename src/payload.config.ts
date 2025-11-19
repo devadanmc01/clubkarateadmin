@@ -41,6 +41,11 @@ export default buildConfig({
       //   // },
       // },
       Nav: '/components/Nav#Nav',
+      logout: {
+        Button: {
+          path: '/components/Logout#Logout',
+        },
+      },
     },
     timezones: {
       supportedTimezones: [

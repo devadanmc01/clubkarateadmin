@@ -119,14 +119,28 @@
       }
     }
 
-    // &__log-out {
-    //   color: var(--theme-elevation-750);
-    //   border-radius: 999px;
-    //   width: base(2.25);
-    //   height: base(2.25);
-    //   display: flex;
-    //   align-items: center;
-    // }
+    &__log-out {
+      display: flex;
+      align-items: center;
+      gap: base(0.25);
+      height: base(2.25);
+      border-radius: 3rem;
+      background-color: var(--theme-elevation-100);
+      text-decoration: none;
+
+      .icon {
+        color: var(--theme-elevation-350);
+      }
+    }
+
+    & &__log-out {
+      padding-right: base(0.75);
+    }
+
+    &__log-out &__label {
+      // text-decoration: none;
+      color: var(--theme-elevation-750);
+    }
 
     // &__log-out:hover {
     //   color: var(--theme-elevation-750);
