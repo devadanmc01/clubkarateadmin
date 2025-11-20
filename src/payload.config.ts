@@ -14,6 +14,7 @@ import Members from './collections/Members'
 import Attendances from './collections/Attendances'
 import Payments from './collections/Payments'
 import Users from './collections/Users'
+import { testEndpoint } from './app/(payload)/api/[...slug]/registro'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -58,6 +59,7 @@ export default buildConfig({
     },
     theme: 'dark',
   },
+
   collections: [Members, Attendances, Payments, Users],
   editor: lexicalEditor(),
   i18n: {
@@ -80,6 +82,7 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   sharp,
+  endpoints: [testEndpoint],
   plugins: [
     payloadCloudPlugin(),
     // storage-adapter-placeholder

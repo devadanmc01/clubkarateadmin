@@ -13,7 +13,7 @@ export const GET = async (request: Request) => {
 
 export const POST = (request: Request) => {
   // const students = payload.find({ collection: 'alumnos' })
-  // console.log(students)
+  console.log(request)
 
   return Response.json({
     message: 'There must be some update somewhere in the database',
