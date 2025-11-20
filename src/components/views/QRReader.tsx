@@ -13,33 +13,71 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [permissionDenied, setPermissionDenied] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const readerRef = useRef<BrowserQRCodeReader | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const controlsRef = useRef<any>(null)
 
   // Inicializar el lector de QR
   useEffect(() => {
-    if (!readerRef.current) {
-      readerRef.current = new BrowserQRCodeReader()
-    }
-
     return () => {
-      if (isScanning && controlsRef.current) {
-        controlsRef.current.stop()
+      if (controlsRef.current) {
+        try {
+          controlsRef.current.stop()
+        } catch (err) {
+          console.log('Error al limpiar controles:', err)
+        }
       }
     }
-  }, [isScanning])
+  }, [])
+
+  // Solicitar permisos de cámara
+  const requestCameraPermission = async (): Promise<boolean> => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+      stream.getTracks().forEach(track => track.stop())
+      setPermissionDenied(false)
+      return true
+    } catch (err) {
+      console.error('[QR READER] Permiso de cámara denegado:', err)
+      setPermissionDenied(true)
+      setError('No tienes permiso para acceder a la cámara. Por favor, habilita los permisos.')
+      return false
+    }
+  }
 
   // Iniciar escaneo
   const startScanning = async () => {
     try {
       setError(null)
       setSuccess(null)
-      setIsScanning(true)
+      setIsLoading(true)
 
-      if (!videoRef.current || !readerRef.current) {
-        throw new Error('No se pudo inicializar el lector de QR')
+      // Solicitar permiso primero
+      const hasPermission = await requestCameraPermission()
+      if (!hasPermission) {
+        setIsLoading(false)
+        return
       }
+
+      if (!videoRef.current) {
+        throw new Error('No se pudo acceder al elemento de video')
+      }
+
+      // Crear nuevo lector cada vez
+      if (readerRef.current) {
+        try {
+          if (controlsRef.current) {
+            controlsRef.current.stop()
+          }
+        } catch (err) {
+          console.log('Error limpiando lector anterior:', err)
+        }
+      }
+
+      readerRef.current = new BrowserQRCodeReader()
+      console.log('[QR READER] Inicializando lector de QR...')
 
       const controls = await readerRef.current.decodeFromVideoDevice(
         undefined,
@@ -48,21 +86,28 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
         async (result: any, err: any) => {
           if (result && isScanning) {
             const qrCode = result.getText()
-            console.log('QR escaneado:', qrCode)
+            console.log('[QR READER] QR escaneado:', qrCode)
             await handleQRScan(qrCode)
           }
-          if (err && !(err.name?.includes('NotFound'))) {
-            console.error('Error de lectura:', err)
+          if (err && err.name !== 'NotFoundException') {
+            // Ignorar el error NotFoundException que es normal durante el escaneo
+            if (!err.message?.includes('Could not decode')) {
+              console.log('[QR READER] Info de escaneo:', err.message)
+            }
           }
         }
       )
 
       controlsRef.current = controls
+      setIsScanning(true)
+      setIsLoading(false)
+      console.log('[QR READER] Escaneo iniciado correctamente')
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Error desconocido'
       console.error('[QR READER] Error al iniciar escaneo:', errorMsg)
-      setError(errorMsg)
+      setError(`Error al inicializar: ${errorMsg}`)
       setIsScanning(false)
+      setIsLoading(false)
       onError?.(errorMsg)
     }
   }
@@ -72,8 +117,10 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
     try {
       if (controlsRef.current) {
         controlsRef.current.stop()
+        controlsRef.current = null
       }
       setIsScanning(false)
+      console.log('[QR READER] Escaneo detenido')
     } catch (err) {
       console.error('[QR READER] Error al detener escaneo:', err)
     }
@@ -84,6 +131,9 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
     try {
       setIsLoading(true)
       setError(null)
+
+      // Detener escaneo después de leer
+      stopScanning()
 
       console.log('[QR READER] Enviando petición con ID:', memberId)
 
@@ -105,22 +155,31 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
       setSuccess(`✓ Asistencia registrada para: ${memberId}`)
       onSuccess?.(data)
 
-      // Limpiar mensaje de éxito después de 3 segundos
-      setTimeout(() => setSuccess(null), 3000)
+      // Limpiar mensaje de éxito después de 3 segundos y permitir nuevo escaneo
+      setTimeout(() => {
+        setSuccess(null)
+        setIsLoading(false)
+      }, 3000)
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Error desconocido'
       console.error('[QR READER] Error al enviar petición:', errorMsg)
       setError(errorMsg)
-      onError?.(errorMsg)
-    } finally {
       setIsLoading(false)
+      onError?.(errorMsg)
     }
   }
 
   return (
     <div className="qr-reader-container">
       <div className="qr-reader-card">
-        <h2 className="qr-reader-title">Escanear QR</h2>
+        <h2 className="qr-reader-title">📱 Lector de QR</h2>
+
+        {/* Camera permission notice */}
+        {permissionDenied && (
+          <div className="qr-message qr-error">
+            <span>⚠️ Se requieren permisos de cámara. Verifica la configuración de tu dispositivo.</span>
+          </div>
+        )}
 
         {/* Video element for QR scanning */}
         {isScanning && (
@@ -128,13 +187,15 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
             ref={videoRef}
             className="qr-video"
             style={{ width: '100%', maxWidth: '400px', aspectRatio: '1' }}
+            autoPlay
+            playsInline
           />
         )}
 
         {/* Messages */}
         {error && (
           <div className="qr-message qr-error">
-            <span>❌ Error: {error}</span>
+            <span>❌ {error}</span>
           </div>
         )}
 
@@ -144,13 +205,19 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
           </div>
         )}
 
-        {isLoading && (
+        {isLoading && !isScanning && (
+          <div className="qr-message qr-loading">
+            <span>⏳ Inicializando cámara...</span>
+          </div>
+        )}
+
+        {isLoading && isScanning && (
           <div className="qr-message qr-loading">
             <span>⏳ Procesando...</span>
           </div>
         )}
 
-        {!isScanning && !success && !error && (
+        {!isScanning && !success && !error && !isLoading && (
           <p className="qr-placeholder">
             Haz clic en &quot;Iniciar escaneo&quot; para comenzar a leer códigos QR
           </p>
@@ -175,6 +242,11 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
             </button>
           )}
         </div>
+
+        {/* Info text */}
+        <p style={{ textAlign: 'center', fontSize: '12px', color: '#999', marginTop: '20px' }}>
+          Asegúrate de que la cámara tenga permisos y apunta al código QR
+        </p>
       </div>
 
       <style jsx>{`
@@ -183,7 +255,7 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
           justify-content: center;
           align-items: center;
           min-height: 100vh;
-          
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           padding: 20px;
         }
 
@@ -269,12 +341,12 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
         }
 
         .qr-button-start {
-          
+          background-color: #667eea;
           color: white;
         }
 
         .qr-button-start:hover:not(:disabled) {
-          background-color: #070709ff;
+          background-color: #5568d3;
           transform: translateY(-2px);
           box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
