@@ -24,6 +24,8 @@
     "@payloadcms/richtext-lexical": "3.53.0",
     "@payloadcms/translations": "^3.53.0",
     "@payloadcms/ui": "3.53.0",
+    "@zxing/browser": "^0.1.5",
+    "@zxing/library": "^0.21.3",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",

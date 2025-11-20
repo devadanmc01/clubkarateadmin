@@ -26,21 +26,20 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components: {
-      // afterNavLinks: [
-      //   './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
-      //   './components/afterNavLink/LinkToPaymentsStatsView#LinkToPaymentsStatsView'
-      //
-      // ],
-      // views: {
-      //   // EstadisticasdeAlumnos: {
-      //   //   Component: './components/views/StudentsStats',
-      //   //   path: '/students-stats'
-      //   // },
-      //   // EstadisticasdePagos: {
-      //   //   Component: './components/views/PaymentsStats',
-      //   //   path: '/payments-stats'
-      //   // },
-      // },
+      afterNavLinks: [
+        './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
+        './components/afterNavLink/LinkToQRReaderView#LinkToQRReaderView',
+      ],
+      views: {
+        EstadisticasdeAlumnos: {
+          Component: './components/views/StudentsStats',
+          path: '/students-stats',
+        },
+        QRReader: {
+          Component: './components/views/QRReaderView',
+          path: '/qr-reader',
+        },
+      },
       Nav: '/components/Nav#Nav',
       logout: {
         Button: {
