@@ -61,8 +61,14 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
         return
       }
 
+      // Cambiar isScanning primero para que React renderice el video
+      setIsScanning(true)
+
+      // Esperar a que el elemento de video se renderice
+      await new Promise(resolve => setTimeout(resolve, 500))
+
       if (!videoRef.current) {
-        throw new Error('No se pudo acceder al elemento de video')
+        throw new Error('No se pudo acceder al elemento de video. Por favor, recarga la página e intenta de nuevo.')
       }
 
       // Crear nuevo lector cada vez
@@ -84,7 +90,7 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
         videoRef.current,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         async (result: any, err: any) => {
-          if (result && isScanning) {
+          if (result) {
             const qrCode = result.getText()
             console.log('[QR READER] QR escaneado:', qrCode)
             await handleQRScan(qrCode)
@@ -99,13 +105,12 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
       )
 
       controlsRef.current = controls
-      setIsScanning(true)
       setIsLoading(false)
       console.log('[QR READER] Escaneo iniciado correctamente')
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Error desconocido'
       console.error('[QR READER] Error al iniciar escaneo:', errorMsg)
-      setError(`Error al inicializar: ${errorMsg}`)
+      setError(`Error: ${errorMsg}`)
       setIsScanning(false)
       setIsLoading(false)
       onError?.(errorMsg)
