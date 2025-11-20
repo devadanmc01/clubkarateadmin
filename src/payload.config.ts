@@ -27,14 +27,14 @@ export default buildConfig({
     },
     components: {
       afterNavLinks: [
-        './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
+       // './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
         './components/afterNavLink/LinkToQRReaderView#LinkToQRReaderView',
       ],
       views: {
-        EstadisticasdeAlumnos: {
+       /* EstadisticasdeAlumnos: {
           Component: './components/views/StudentsStats',
           path: '/students-stats',
-        },
+        },*/
         QRReader: {
           Component: './components/views/QRReaderView',
           path: '/qr-reader',

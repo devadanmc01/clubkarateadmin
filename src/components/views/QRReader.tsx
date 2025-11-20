@@ -260,7 +260,6 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
           justify-content: center;
           align-items: center;
           min-height: 100vh;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           padding: 20px;
         }
 
@@ -346,12 +345,11 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
         }
 
         .qr-button-start {
-          background-color: #667eea;
           color: white;
         }
 
         .qr-button-start:hover:not(:disabled) {
-          background-color: #5568d3;
+          background-color: #28292aff;
           transform: translateY(-2px);
           box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
