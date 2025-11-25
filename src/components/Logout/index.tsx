@@ -7,7 +7,7 @@ import { Link, LogOutIcon, useConfig, useTranslation } from '@payloadcms/ui'
 
 const baseClass = 'nav'
 
-export function Logout({ tabIndex = 0 }) {
+export default function Logout({ tabIndex = 0 }) {
   const { t } = useTranslation()
   const { config } = useConfig()
 

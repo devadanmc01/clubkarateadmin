@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { BrowserQRCodeReader } from '@zxing/browser'
+import { Scan, SquarePause } from 'lucide-react'
 
 interface QRReaderProps {
   onSuccess?: (data: { message: string; status: string; data?: Record<string, unknown> }) => void
@@ -177,7 +178,7 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
   return (
     <div className="qr-reader-container">
       <div className="qr-reader-card">
-        <h2 className="qr-reader-title">📱 Lector de QR</h2>
+        <h2 className="qr-reader-title">Registrar asistencias</h2>
 
         {/* Camera permission notice */}
         {permissionDenied && (
@@ -236,14 +237,16 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
               disabled={isLoading}
               className="qr-button qr-button-start"
             >
-              📱 Iniciar escaneo
+              <Scan />
+              <span style={{ marginLeft: '8px' }}>Iniciar escaneo</span>
             </button>
           ) : (
             <button
               onClick={stopScanning}
               className="qr-button qr-button-stop"
             >
-              ⏹️ Detener escaneo
+              <SquarePause />
+              <span style={{ marginLeft: '8px' }}>Detener escaneo</span>
             </button>
           )}
         </div>
@@ -259,7 +262,7 @@ export const QRReader: React.FC<QRReaderProps> = ({ onSuccess, onError }) => {
           display: flex;
           justify-content: center;
           align-items: center;
-          min-height: 100vh;
+          min-height: calc(100vh - var(--app-header-height));
           padding: 20px;
         }
 

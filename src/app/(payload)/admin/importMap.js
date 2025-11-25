@@ -1,11 +1,11 @@
-import { Nav as Nav_576d6fffb75fcb081ff863baa2ca974a } from '../../../components/Nav'
-import { Logout as Logout_48020f3667ddea7ceca78c6415f50ac2 } from '../../../components/Logout'
-import { LinkToQRReaderView as LinkToQRReaderView_ad49247c40387bd747b35e94be25f7b3 } from '../../../components/afterNavLink/LinkToQRReaderView'
-import { default as default_9dbf27add80d8b9dc44cde6239af171b } from '../../../components/views/QRReaderView'
+import { default as default_576d6fffb75fcb081ff863baa2ca974a } from '../../../components/Nav'
+import { default as default_48020f3667ddea7ceca78c6415f50ac2 } from '../../../components/Logout'
+import { default as default_fe040e5492f89d4f0aceb4b7c0e6a400 } from '../../../components/beforeNavLinks/LinkToRegisterAttendanceView'
+import { default as default_35cf875305bc585f7c99a9a077af0266 } from '../../../components/views/RegisterAttendance'
 
 export const importMap = {
-  "/components/Nav#Nav": Nav_576d6fffb75fcb081ff863baa2ca974a,
-  "/components/Logout#Logout": Logout_48020f3667ddea7ceca78c6415f50ac2,
-  "./components/afterNavLink/LinkToQRReaderView#LinkToQRReaderView": LinkToQRReaderView_ad49247c40387bd747b35e94be25f7b3,
-  "./components/views/QRReaderView#default": default_9dbf27add80d8b9dc44cde6239af171b
+  "/components/Nav#default": default_576d6fffb75fcb081ff863baa2ca974a,
+  "/components/Logout#default": default_48020f3667ddea7ceca78c6415f50ac2,
+  "./components/beforeNavLinks/LinkToRegisterAttendanceView#default": default_fe040e5492f89d4f0aceb4b7c0e6a400,
+  "./components/views/RegisterAttendance#default": default_35cf875305bc585f7c99a9a077af0266
 }
