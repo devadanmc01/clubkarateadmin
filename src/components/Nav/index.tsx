@@ -130,3 +130,5 @@ export const Nav: FC<ServerProps> = async (props) => {
     </NavWrapper>
   )
 }
+
+export default Nav

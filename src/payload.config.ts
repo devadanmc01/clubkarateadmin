@@ -16,6 +16,8 @@ import Payments from './collections/Payments'
 import Users from './collections/Users'
 import { testEndpoint } from './app/(payload)/api/[...slug]/registro'
 
+import { customTranslations } from './custom-translations'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -26,25 +28,26 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components: {
-      // afterNavLinks: [
-      //   './components/afterNavLink/LinkToStudentsStatsView#LinkToStudentsStatsView',
-      //   './components/afterNavLink/LinkToPaymentsStatsView#LinkToPaymentsStatsView'
-      //
-      // ],
-      // views: {
-      //   // EstadisticasdeAlumnos: {
-      //   //   Component: './components/views/StudentsStats',
-      //   //   path: '/students-stats'
-      //   // },
-      //   // EstadisticasdePagos: {
-      //   //   Component: './components/views/PaymentsStats',
-      //   //   path: '/payments-stats'
-      //   // },
-      // },
-      Nav: '/components/Nav#Nav',
+      beforeNavLinks: [
+        './components/beforeNavLinks/LinkToRegisterAttendanceView',
+      ],
+      afterNavLinks: [
+        // './components/afterNavLinks/LinkToStudentsStatsView#LinkToStudentsStatsView',
+      ],
+      views: {
+        /* EstadisticasdeAlumnos: {
+          Component: './components/views/StudentsStats',
+          path: '/students-stats',
+        },*/
+        registerAttendance: {
+          Component: './components/views/RegisterAttendance',
+          path: '/registrar-asistencia',
+        },
+      },
+      Nav: '/components/Nav',
       logout: {
         Button: {
-          path: '/components/Logout#Logout',
+          path: '/components/Logout',
         },
       },
     },
@@ -73,6 +76,7 @@ export default buildConfig({
         dateFNSKey: 'es',
       },
     },
+    translations: customTranslations,
   },
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

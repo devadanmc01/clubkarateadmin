@@ -325,8 +325,74 @@ pnpm payload               # Acceso directo a comandos de Payload
 - **Playground:** `/api/graphql-playground`
 
 ### REST
-- **Registro:** `/api/registro`
-- **General:** `/api/[...slug]`
+
+#### POST `/api/registro`
+**Propósito:** Registrar asistencia de un miembro en la colección `attendances`
+
+**Autenticación:** ✅ Requerida (usuario debe estar logueado)
+
+**Body (JSON):**
+```json
+{
+  "id": "member-id-aqui"
+}
+```
+
+**Parámetros:**
+- `id` (string, requerido) - ID del miembro a registrar asistencia
+
+**Respuesta exitosa (200):**
+```json
+{
+  "message": "Asistencia registrada correctamente",
+  "status": "success",
+  "data": {
+    "id": "attendance-id",
+    "member": ["member-id"],
+    "createdAt": "2025-11-19T10:30:00.000Z",
+    "updatedAt": "2025-11-19T10:30:00.000Z"
+  }
+}
+```
+
+**Errores:**
+
+| Código | Caso | Respuesta |
+|--------|------|-----------|
+| 401 | Usuario no autenticado | `{"error": "No autorizado", "status": "error", "message": "Debes estar logueado..."}` |
+| 400 | Campo `id` falta | `{"error": "El campo id es requerido", "status": "error"}` |
+| 500 | Error en base de datos | `{"error": "Error al procesar la solicitud", "status": "error", "details": "..."}` |
+
+**Ejemplo con cURL:**
+```bash
+curl -X POST http://localhost:3000/api/registro \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <token>" \
+  -d '{"id": "miembro-id-aqui"}'
+```
+
+**Implementación:**
+- **Archivo:** `src/app/(payload)/api/[...slug]/registro.ts`
+- **Controller:** `src/controllers/attendanceController.ts`
+- **Lógica:**
+  1. Valida autenticación del usuario
+  2. Parsea el body JSON
+  3. Valida que exista el campo `id`
+  4. Crea registro en colección `attendances`
+  5. Retorna el registro creado
+
+**Funciones del Controller:**
+- `validateAuthentication()` - Verifica que el usuario esté logueado
+- `validateRequestBody()` - Valida presencia del campo `id`
+- `createAttendanceRecord()` - Crea el registro en la BD
+- `handleAttendanceRegistration()` - Orquesta todo el flujo
+
+---
+
+#### GET/POST/PATCH/PUT/DELETE `/api/[...slug]`
+**Propósito:** API REST de Payload para CRUD de colecciones
+
+**Nota:** Generada automáticamente por Payload CMS
 
 ---
 
@@ -457,6 +523,14 @@ pnpm payload               # Acceso directo a comandos de Payload
 
 ## 🏁 Próximos Pasos para Desarrollo
 
+### Completados ✅
+- [x] Endpoint `/api/registro` POST para registro de asistencias
+- [x] Refactorización del endpoint en controllers
+- [x] Validación de autenticación
+- [x] Validación de body requerido
+- [x] Manejo completo de errores
+
+### Pendientes
 - [ ] Descomentar vistas de estadísticas cuando estén listas
 - [ ] Habilitar colección Media si es necesario
 - [ ] Implementar más validaciones de acceso granular
@@ -464,6 +538,8 @@ pnpm payload               # Acceso directo a comandos de Payload
 - [ ] Dashboard mejorado
 - [ ] Reportes automatizados
 - [ ] Sistema de notificaciones
+- [ ] Tests unitarios para el controller
+- [ ] Tests E2E para el endpoint `/api/registro`
 
 ---
 
