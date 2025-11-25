@@ -1,6 +1,6 @@
 import React from 'react'
 import { DefaultTemplate, MinimalTemplate } from '@payloadcms/next/templates'
-import { Gutter } from '@payloadcms/ui'
+import { Gutter, SetStepNav, type StepNavItem } from '@payloadcms/ui'
 
 import { CustomTranslationsKeys } from '../../../custom-translations'
 import { QRReaderView } from '../QRReaderView'
@@ -27,6 +27,13 @@ export const RegisterAttandanceView: React.FC<AdminViewServerProps> = ({
     )
   }
 
+  const steps: StepNavItem[] = [
+    {
+      url: '/registrar-asistencia',
+      label: 'Registrar Asistencias'
+    }
+  ]
+
   // <h1>{t('custom:registerAttendance')}<h1>
   return (
     <DefaultTemplate
@@ -40,6 +47,7 @@ export const RegisterAttandanceView: React.FC<AdminViewServerProps> = ({
       visibleEntities={initPageResult.visibleEntities}
     >
       <Gutter>
+        <SetStepNav nav={steps} />
         <QRReaderView />
       </Gutter>
     </DefaultTemplate>
