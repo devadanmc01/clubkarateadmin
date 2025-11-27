@@ -76,11 +76,13 @@ export interface UserAuthOperations {
  */
 export interface Member {
   id: string;
-  fullName?: string | null;
+  fullName: string;
+  birthDate: string;
+  genre: 'female' | 'male' | 'other';
   email: string;
   phone?: string | null;
-  joinDate?: string | null;
   status: 'active' | 'inactive' | 'pending';
+  joinDate?: string | null;
   notes?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -208,10 +210,12 @@ export interface PayloadMigration {
  */
 export interface MembersSelect<T extends boolean = true> {
   fullName?: T;
+  birthDate?: T;
+  genre?: T;
   email?: T;
   phone?: T;
-  joinDate?: T;
   status?: T;
+  joinDate?: T;
   notes?: T;
   updatedAt?: T;
   createdAt?: T;
