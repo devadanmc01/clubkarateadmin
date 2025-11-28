@@ -21,6 +21,7 @@ export interface Config {
   blocks: {};
   collections: {
     members: Member;
+    belts: Belt;
     attendances: Attendance;
     payments: Payment;
     users: User;
@@ -31,6 +32,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     members: MembersSelect<false> | MembersSelect<true>;
+    belts: BeltsSelect<false> | BeltsSelect<true>;
     attendances: AttendancesSelect<false> | AttendancesSelect<true>;
     payments: PaymentsSelect<false> | PaymentsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -84,6 +86,71 @@ export interface Member {
   status: 'active' | 'inactive' | 'pending';
   joinDate?: string | null;
   notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "belts".
+ */
+export interface Belt {
+  id: string;
+  name: string;
+  /**
+   * Color principal del grado (ej: blanco, amarillo, verde, etc.)
+   */
+  color: string;
+  /**
+   * Orden ascendente (1 para el grado más bajo)
+   */
+  order: number;
+  levelType: 'gup' | 'dan' | 'poom' | 'other';
+  /**
+   * Número del grado (ej: 10 para 10° Gup, 1 para 1° Dan)
+   */
+  levelNumber?: number | null;
+  /**
+   * Descripción del significado y requisitos del grado
+   */
+  description?: string | null;
+  minimumTime?: {
+    /**
+     * Tiempo mínimo en meses requerido en el grado anterior
+     */
+    months?: number | null;
+    /**
+     * Edad mínima requerida
+     */
+    age?: number | null;
+  };
+  requiredTechniques?:
+    | {
+        technique: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  forms?:
+    | {
+        formName: string;
+        koreanName?: string | null;
+        movements?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  breakingTechniques?:
+    | {
+        technique: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  sparringRequirements?: string | null;
+  theoryKnowledge?: string | null;
+  /**
+   * Indica si este grado está actualmente en uso
+   */
+  isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -149,6 +216,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'members';
         value: string | Member;
+      } | null)
+    | ({
+        relationTo: 'belts';
+        value: string | Belt;
       } | null)
     | ({
         relationTo: 'attendances';
@@ -217,6 +288,51 @@ export interface MembersSelect<T extends boolean = true> {
   status?: T;
   joinDate?: T;
   notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "belts_select".
+ */
+export interface BeltsSelect<T extends boolean = true> {
+  name?: T;
+  color?: T;
+  order?: T;
+  levelType?: T;
+  levelNumber?: T;
+  description?: T;
+  minimumTime?:
+    | T
+    | {
+        months?: T;
+        age?: T;
+      };
+  requiredTechniques?:
+    | T
+    | {
+        technique?: T;
+        description?: T;
+        id?: T;
+      };
+  forms?:
+    | T
+    | {
+        formName?: T;
+        koreanName?: T;
+        movements?: T;
+        id?: T;
+      };
+  breakingTechniques?:
+    | T
+    | {
+        technique?: T;
+        description?: T;
+        id?: T;
+      };
+  sparringRequirements?: T;
+  theoryKnowledge?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }

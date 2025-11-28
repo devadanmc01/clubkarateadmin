@@ -17,6 +17,7 @@ import Users from './collections/Users'
 import { testEndpoint } from './app/(payload)/api/[...slug]/registro'
 
 import { customTranslations } from './custom-translations'
+import { Belts } from './collections/Belts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -63,7 +64,7 @@ export default buildConfig({
     theme: 'dark',
   },
 
-  collections: [Members, Attendances, Payments, Users],
+  collections: [Members, Belts, Attendances, Payments, Users],
   editor: lexicalEditor(),
   i18n: {
     supportedLanguages: {
