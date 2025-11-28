@@ -43,7 +43,6 @@ export const Payments: CollectionConfig = {
       type: 'date',
       virtual: true,
       admin: {
-        readOnly: true,
         date: {
           displayFormat: 'd MMM yyy h:mm:ss a',
         },

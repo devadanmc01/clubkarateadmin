@@ -27,39 +27,53 @@ const Members: CollectionConfig = {
   },
   fields: [
     {
-      label: { en: 'Full name', es: 'Nombre completo' },
-      name: 'fullName',
-      type: 'text',
-    },
-    {
-      label: 'Email',
-      name: 'email',
-      type: 'email',
-      required: true,
-    },
-    {
-      label: { en: 'Phone', es: 'Teléfono' },
-      name: 'phone',
-      type: 'text',
-    },
-    {
-      label: { en: 'Join date', es: 'Fecha de afiliación' },
-      name: 'joinDate',
-      type: 'date',
-      virtual: true,
-      admin: {
-        readOnly: true,
-        date: {
-          displayFormat: 'd MMM yyy h:mm:ss a',
+      type: 'row',
+      fields: [
+        {
+          label: { en: 'Full name', es: 'Nombre completo' },
+          name: 'fullName',
+          type: 'text',
+          required: true,
         },
-      },
-      hooks: {
-        afterRead: [
-          ({ originalDoc }) => {
-            return new Date(originalDoc.createdAt)
+        {
+          label: { en: 'Birth date', es: 'Fecha de nacimiento' },
+          name: 'birthDate',
+          type: 'date',
+          required: true,
+          admin: {
+            date: {
+              displayFormat: 'd MMMM yyy',
+            },
           },
-        ],
-      },
+        },
+        {
+          label: { en: 'Genre', es: 'Género' },
+          name: 'genre',
+          type: 'select',
+          options: [
+            { value: 'female', label: { en: 'Female', es: 'Femenino' } },
+            { value: 'male', label: { en: 'Male', es: 'Masculino' } },
+            { value: 'other', label: { en: 'Other', es: 'Otro' } },
+          ],
+          required: true,
+        },
+      ]
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          label: 'Email',
+          name: 'email',
+          type: 'email',
+          required: true,
+        },
+        {
+          label: { en: 'Phone', es: 'Teléfono' },
+          name: 'phone',
+          type: 'text',
+        },
+      ]
     },
     {
       label: { en: 'Status', es: 'Estatus' },
@@ -72,6 +86,25 @@ const Members: CollectionConfig = {
       ],
       defaultValue: 'active',
       required: true,
+    },
+    {
+      label: { en: 'Join date', es: 'Fecha de afiliación' },
+      name: 'joinDate',
+      type: 'date',
+      virtual: true,
+      admin: {
+        readOnly: true,
+        date: {
+          displayFormat: 'd MMMM yyy h:mm a',
+        },
+      },
+      hooks: {
+        afterRead: [
+          ({ originalDoc }) => {
+            return new Date(originalDoc.createdAt)
+          },
+        ],
+      },
     },
     {
       label: { en: 'Notes', es: 'Notas' },
